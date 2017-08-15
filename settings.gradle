@@ -1,0 +1,3 @@
+rootProject.name = 'Asylum'
+include  'common','client', 'engine'
+
