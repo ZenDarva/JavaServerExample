@@ -7,7 +7,7 @@ bin
 .project
 logs/
 config/
-
+classes/
 # idea
 out
 *.ipr

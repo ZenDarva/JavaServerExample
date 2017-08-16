@@ -16,6 +16,8 @@ public class ClientMain {
     public static void main(String args[]) throws IOException, InterruptedException {
         Socket socket = new Socket("localhost",9000);
         //socket.connect(new InetSocketAddress("localhost",9000));
+        PacketManager.getInstance().registerHandler("vanilla",1,PacketConnect.class, new PacketConnect.ConnectHandler());
+        PacketManager.getInstance().registerHandler("vanilla",2,PacketShutdown.class, null);
         PacketConnect connect = new PacketConnect("darva");
         PacketManager.getInstance().sendPacket(socket, connect);
         Thread.sleep(20000);

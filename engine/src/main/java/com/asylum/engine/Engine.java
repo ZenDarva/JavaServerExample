@@ -42,8 +42,8 @@ public class Engine {
 
         players = new ArrayList<>();
         NetworkManager.getInstance().start(9000);
-        PacketManager.getInstance().registerHandler(PacketConnect.class, new PacketConnect.ConnectHandler());
-        PacketManager.getInstance().registerHandler(PacketShutdown.class, new PacketShutdownHandler());
+        PacketManager.getInstance().registerHandler("vanilla",1,PacketConnect.class, new PacketConnect.ConnectHandler());
+        PacketManager.getInstance().registerHandler("vanilla",2,PacketShutdown.class, new PacketShutdownHandler());
 
         while(running){
             try {

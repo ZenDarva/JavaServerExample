@@ -35,6 +35,7 @@ public class Listener extends Thread {
         try {
             LOGGER.info("Starting server on port {}", port);
             socket = new ServerSocket(port);
+            socket.setSoTimeout(1000);
             ;
         } catch (IOException e) {
 
@@ -59,8 +60,10 @@ public class Listener extends Thread {
     private void checkConnections(){
         try {
             Socket newConnection = socket.accept();
-            LOGGER.info("Accepting connection from {}", newConnection.getInetAddress().getHostAddress());
-            NetworkManager.getInstance().addConnection(newConnection);
+            if (newConnection.isConnected()) {
+                LOGGER.info("Accepting connection from {}", newConnection.getInetAddress().getHostAddress());
+                NetworkManager.getInstance().addConnection(newConnection);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
