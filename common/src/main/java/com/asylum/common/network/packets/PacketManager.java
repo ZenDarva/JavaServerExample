@@ -41,7 +41,7 @@ public class PacketManager {
 
     }
 
-    public void handlePacket(DataInputStream stream){
+    public void handlePacket(Socket socket, DataInputStream stream){
         try {
             String namespace = PacketUtils.readString(stream);
             int id = stream.readInt();
@@ -55,7 +55,7 @@ public class PacketManager {
                     IPacket packet = (IPacket) data.packet.newInstance();
                     packet.deserialize(stream);
                     if (data.handler != null) {
-                        data.handler.handle(packet);
+                        data.handler.handle(packet, socket);
                     }
                     break;
                 }

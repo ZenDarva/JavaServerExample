@@ -64,7 +64,7 @@ public class NetworkManager extends Thread {
                     if (data.read(stream))
                     {
                         bufferMap.remove(socket);//We're done with that buffer, a new one will be created if needed.
-                        PacketManager.getInstance().handlePacket(new DataInputStream(new ByteArrayInputStream(data.data.toByteArray())));
+                        PacketManager.getInstance().handlePacket(socket,new DataInputStream(new ByteArrayInputStream(data.data.toByteArray())));
                     }
 
                 }

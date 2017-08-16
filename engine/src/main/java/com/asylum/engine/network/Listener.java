@@ -65,7 +65,6 @@ public class Listener extends Thread {
                 NetworkManager.getInstance().addConnection(newConnection);
             }
         } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 }

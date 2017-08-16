@@ -2,10 +2,12 @@ package com.asylum.engine;
 
 
 import com.asylum.common.entity.EntityPlayer;
+import com.asylum.common.event.EventManager;
 import com.asylum.common.network.packets.PacketConnect;
 import com.asylum.common.network.packets.PacketManager;
 
 import com.asylum.common.network.packets.PacketShutdown;
+import com.asylum.engine.event.handlers.PlayerEvents;
 import com.asylum.engine.network.Listener;
 import com.asylum.engine.network.NetworkManager;
 import com.asylum.engine.network.PacketShutdownHandler;
@@ -44,6 +46,7 @@ public class Engine {
         NetworkManager.getInstance().start(9000);
         PacketManager.getInstance().registerHandler("vanilla",1,PacketConnect.class, new PacketConnect.ConnectHandler());
         PacketManager.getInstance().registerHandler("vanilla",2,PacketShutdown.class, new PacketShutdownHandler());
+        EventManager.getInstance().registerHandler(new PlayerEvents());
 
         while(running){
             try {
@@ -55,9 +58,7 @@ public class Engine {
         Listener.getInstance().interrupt();
     }
 
-    public void addPlayer(Socket socket){
-        EntityPlayer player = new EntityPlayer();
-        player.socket = socket;
+    public static void addPlayer(EntityPlayer player){
         playersLock.writeLock().lock();
         try{
             players.add(player);
@@ -66,7 +67,7 @@ public class Engine {
             playersLock.writeLock().unlock();
         }
     }
-    public List<EntityPlayer> getPlayers(){
+    public static List<EntityPlayer> getPlayers(){
         playersLock.readLock().lock();
         try {
             return Collections.unmodifiableList(players);
@@ -74,6 +75,19 @@ public class Engine {
         finally{
             playersLock.readLock().unlock();
         }
+    }
 
+    public EntityPlayer getPlayerByName(String name) {
+        playersLock.readLock().lock();
+        try {
+            for (EntityPlayer player : players){
+                if (player.displayName.equals(name))
+                        return player;
+            }
+        }
+        finally{
+            playersLock.readLock().unlock();
+        }
+        return null;
     }
 }
